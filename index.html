@@ -9,6 +9,7 @@
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
   </head>
   <body>
+    <div id="status">status :</div>
     <div id="map" style="height: 100vh"></div>
     <script src="
     https://cdn.jsdelivr.net/npm/leaflet-geometryutil@0.10.3/src/leaflet.geometryutil.min.js
@@ -47,11 +48,15 @@
           let lng = position.coords.longitude;
           map.setView([lat, lng], 20);
           currentLocation = L.marker([lat, lng]).addTo(map);
-          let point = L.latLng(lat, lng);
-          isPointOnLine(point, destination.getLatLng());
+          if (destination) {
+            let point = L.latLng(lat, lng);
+            console.log(isPointOnLine(point, destination.getLatLng()));
+            document.querySelector("#status").innerHTML =
+              "Status :" + isPointOnLine(point, destination.getLatLng());
+          }
         },
         null,
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: true, timeout: 0, maximumAge: 0 }
       );
 
       map.on("click", function (e) {
