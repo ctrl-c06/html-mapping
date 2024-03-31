@@ -35,6 +35,7 @@
       let currentLocation = null;
       let destination = null;
       let routingControl = null;
+      let routing = null;
       navigator.geolocation.watchPosition(
         (position) => {
           console.log(
@@ -46,6 +47,8 @@
           let lng = position.coords.longitude;
           map.setView([lat, lng], 20);
           currentLocation = L.marker([lat, lng]).addTo(map);
+          let point = L.latLng(lat, lng);
+          isPointOnLine(point, destination.getLatLng());
         },
         null,
         { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
@@ -59,6 +62,7 @@
         if (routingControl) {
           map.removeControl(routingControl);
         }
+
         destination = L.marker(e.latlng, { draggable: false }).addTo(map);
 
         // draw routing control
@@ -67,6 +71,7 @@
           routeWhileDragging: false,
           draggableWaypoints: false, // Remove on drag
         }).addTo(map);
+        routing = routingControl;
       });
     </script>
   </body>
